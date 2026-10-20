@@ -7,15 +7,24 @@ public class SpawnManagerX : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject powerupPrefab;
 
+    public float defaultSpeed = 100;
     private float spawnRangeX = 10;
     private float spawnZMin = 15; // set min spawn Z
     private float spawnZMax = 25; // set max spawn Z
 
     public int enemyCount;
     public int waveCount = 1;
+    public int speedIncrease;
 
 
-    public GameObject player; 
+    public GameObject player;
+
+    private void Start()
+    {
+        enemyPrefab.GetComponent<EnemyX>().speed = defaultSpeed;
+        speedIncrease = 0;
+        SpawnEnemyWave(waveCount);
+    }
 
     // Update is called once per frame
     void Update()
@@ -24,6 +33,8 @@ public class SpawnManagerX : MonoBehaviour
 
         if (enemyCount == 0)
         {
+            speedIncrease = speedIncrease + 100;
+            enemyPrefab.GetComponent<EnemyX>().speed = enemyPrefab.GetComponent<EnemyX>().speed + speedIncrease;
             SpawnEnemyWave(waveCount);
         }
 
@@ -45,13 +56,14 @@ public class SpawnManagerX : MonoBehaviour
         // If no powerups remain, spawn a powerup
         if (GameObject.FindGameObjectsWithTag("Powerup").Length == 0) // check that there are zero powerups
         {
+           
             Instantiate(powerupPrefab, GenerateSpawnPosition() + powerupSpawnOffset, powerupPrefab.transform.rotation);
         }
 
         // Spawn number of enemy balls based on wave number
         for (int i = 0; i < waveCount; i++)
         {
-            enemyPrefab.GetComponent<EnemyX>().speed = enemyPrefab.GetComponent<EnemyX>().speed * (1 + (waveCount / 2));
+            
             Debug.Log($"enemy speed is {enemyPrefab.GetComponent<EnemyX>().speed} on wave {waveCount}");
             Instantiate(enemyPrefab, GenerateSpawnPosition(), enemyPrefab.transform.rotation);
         }
