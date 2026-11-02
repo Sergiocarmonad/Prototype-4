@@ -14,7 +14,7 @@ public class SpawnManagerX : MonoBehaviour
 
     public int enemyCount;
     public int waveCount = 1;
-    public int speedIncrease;
+    public float speedIncrease;
 
 
     public GameObject player;
@@ -33,9 +33,10 @@ public class SpawnManagerX : MonoBehaviour
 
         if (enemyCount == 0)
         {
-            speedIncrease = speedIncrease + 100;
+            speedIncrease = speedIncrease + (defaultSpeed / 3.0f);
             enemyPrefab.GetComponent<EnemyX>().speed = enemyPrefab.GetComponent<EnemyX>().speed + speedIncrease;
             SpawnEnemyWave(waveCount);
+            Debug.Log(speedIncrease);
         }
 
     }
